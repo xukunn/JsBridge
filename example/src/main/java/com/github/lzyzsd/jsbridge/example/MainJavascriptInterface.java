@@ -13,11 +13,11 @@ import java.util.Map;
  * Author: bigwang
  * Description:
  */
-public class MainJavascrotInterface extends BridgeWebView.BaseJavascriptInterface {
+public class MainJavascriptInterface extends BridgeWebView.BaseJavascriptInterface {
 
     private BridgeWebView mWebView;
 
-    public MainJavascrotInterface(Map<String, OnBridgeCallback> callbacks, BridgeWebView webView) {
+    public MainJavascriptInterface(Map<String, OnBridgeCallback> callbacks, BridgeWebView webView) {
         super(callbacks);
         mWebView = webView;
     }
