@@ -3,7 +3,9 @@ package com.github.lzyzsd.jsbridge.example;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,9 +14,12 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.Button;
 
+import android.widget.Toast;
+import androidx.annotation.RequiresApi;
 import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.github.lzyzsd.jsbridge.OnBridgeCallback;
 import com.google.gson.Gson;
+import java.util.Locale;
 
 public class MainActivity extends Activity implements OnClickListener {
 
@@ -23,6 +28,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	BridgeWebView webView;
 
 	Button button;
+	Button buttonAsync;
 
 	int RESULT_CODE = 0;
 
@@ -48,8 +54,8 @@ public class MainActivity extends Activity implements OnClickListener {
         webView = (BridgeWebView) findViewById(R.id.webView);
 
 		button = (Button) findViewById(R.id.button);
-
 		button.setOnClickListener(this);
+		findViewById(R.id.buttonAsync).setOnClickListener(this);
 
 
 		webView.setWebChromeClient(new WebChromeClient() {
@@ -77,7 +83,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			}
 		});
 
-		webView.addJavascriptInterface(new MainJavascrotInterface(webView.getCallbacks(), webView), "android");
+		webView.addJavascriptInterface(new MainJavascriptInterface(webView.getCallbacks(), webView), "android");
 		webView.setGson(new Gson());
 		webView.loadUrl("file:///android_asset/demo.html");
 
@@ -127,14 +133,20 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 	}
 
-	@Override
+	@RequiresApi(api = Build.VERSION_CODES.KITKAT) @Override
 	public void onClick(View v) {
 		if (button.equals(v)) {
-            webView.callHandler("functionInJs", "data from Java", new OnBridgeCallback() {
+			webView.evaluateJavascript(String.format(Locale.CHINA,"javascript:%s","syncFn(\"name\")"), new ValueCallback<String>() {
+				@Override public void onReceiveValue(String s) {
+					Toast.makeText(MainActivity.this,s,Toast.LENGTH_SHORT).show();
+				}
+			});
+
+		} else if (R.id.buttonAsync==v.getId()) {
+			webView.callHandler("functionInJs", "java调用js方法的入参", new OnBridgeCallback() {
 
 				@Override
 				public void onCallBack(String data) {
-					// TODO Auto-generated method stub
 					Log.i(TAG, "reponse data from js " + data);
 				}
 
