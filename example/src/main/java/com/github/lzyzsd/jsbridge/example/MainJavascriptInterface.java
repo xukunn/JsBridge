@@ -3,6 +3,7 @@ package com.github.lzyzsd.jsbridge.example;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 
+import com.github.lzyzsd.jsbridge.BaseJavascriptInterface;
 import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.github.lzyzsd.jsbridge.OnBridgeCallback;
 
@@ -13,7 +14,7 @@ import java.util.Map;
  * Author: bigwang
  * Description:
  */
-public class MainJavascriptInterface extends BridgeWebView.BaseJavascriptInterface {
+public class MainJavascriptInterface extends BaseJavascriptInterface {
 
     private BridgeWebView mWebView;
 
@@ -24,7 +25,7 @@ public class MainJavascriptInterface extends BridgeWebView.BaseJavascriptInterfa
 
     @Override
     public String send(String data) {
-        return "it is default response";
+        return "it is default response from java";
     }
 
 
@@ -32,5 +33,11 @@ public class MainJavascriptInterface extends BridgeWebView.BaseJavascriptInterfa
     public void submitFromWeb(String data, String callbackId) {
         Log.d("chromium data", data + ", callbackId: " + callbackId + " " + Thread.currentThread().getName());
         mWebView.sendResponse("submitFromWeb response", callbackId);
+    }
+
+    @JavascriptInterface
+    public String getToken(String data){
+        Log.d("chromium data", "getToken: "+data);
+        return "007";
     }
 }

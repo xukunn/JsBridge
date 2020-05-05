@@ -57,7 +57,7 @@
       console.log(e);
     }
     if (typeof fn === 'function') {
-      var responseData = fn.call(this, JSON.stringify(message), callbackId);
+      var responseData = fn.call(window.android, JSON.stringify(message), callbackId);
       if (responseData) {
         console.log('response message: ' + responseData);
         responseCallback = responseCallbacks[callbackId];
