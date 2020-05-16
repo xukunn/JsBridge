@@ -4,6 +4,8 @@
 
 inspired and modified from [this](https://github.com/jacin1/JsBridge) and wechat jsBridge file, with some bugs fix and feature enhancement.
 
+说明:js调用android方法的方式为@JavascriptInterface
+
 This project make a bridge between Java and JavaScript.
 
 It provides safe and convenient way to call Java code from js and call js code from java.
